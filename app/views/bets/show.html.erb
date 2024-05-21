@@ -1,0 +1,18 @@
+<%= render 'layouts/navbar' %>
+
+<div style="background-color: #f0f0f0; padding: 20px; border-radius: 10px; min-height: 100vh; display: flex; flex-direction: column; align-items: center;">
+
+  <h3 style="margin-bottom: 10px;">Bet <%= @bet.id %> is for <%= @bet.game %></h3>
+
+  <p style="margin-bottom: 10px;">User <%= @bet.user_id %> bet <%= @bet.bet %> on <%= @bet.winner %>. </p>
+  <p style="margin-bottom: 10px;">They have the potential to win <%= @bet.win_potential %>.</p>
+
+  <!-- If bet belongs to authed user... -->
+  <button style="background-color: #ff4d4f; color: #fff; border: none; border-radius: 5px; padding: 8px 16px;">
+    <%= link_to "Destroy", bet_path(@bet), data: {
+      turbo_method: :delete,
+      turbo_confirm: "Rescind bet?"
+    } %>
+  </button>
+
+</div>

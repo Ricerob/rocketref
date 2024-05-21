@@ -1,0 +1,94 @@
+<%= render 'layouts/navbar' %>
+
+<div style="background-color: #f0f0f0; padding: 20px; border-radius: 10px; min-height: 100vh; display: flex; flex-direction: column; align-items: center;">
+
+  <h1 style="text-align: center;">New Bet</h1>
+
+  <%= form_with model: @bet, html: { style: "width: 400px; padding: 20px; border-radius: 10px; background-color: #fff;" } do |form| %>
+    <div style="margin-bottom: 10px;">
+      <%= form.label :game %><br>
+      <%= select_tag 'game_select', options_for_select(@games.map { |game| [game[:title], game.to_json] }), prompt: 'Select a game' %>
+      <%= form.hidden_field :game, id: 'bet_game' %>
+      <%= form.hidden_field :odds, id: 'bet_odds' %>
+      <%= form.hidden_field :date, id: 'bet_date' %>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+      <%= form.label :odds %><br>
+      <%= form.text_field :odds, id: 'odds', readonly: true, style: "border-radius: 5px; padding: 5px;" %>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+      <%= form.label :date %><br>
+      <%= form.text_field :date, id: 'game_date', readonly: true, style: "border-radius: 5px; padding: 5px;" %>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+      <%= form.label :bet %><br>
+      <%= form.number_field :bet, step: '0.01', id: 'bet_amount', style: "border-radius: 5px; padding: 5px;" %>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+      <%= form.label :winner %><br>
+      <%= form.select :winner, options_for_select(@winners), id: 'bet_winner', style: "border-radius: 5px; padding: 5px;" %>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+      <%= form.label :potential_earnings %><br>
+      <%= form.text_field :win_potential, id: 'potential_earnings', readonly: true, style: "border-radius: 5px; padding: 5px;" %>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+      <%= form.submit %>
+    </div>
+  <% end %>
+
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const gameSelect = document.getElementById('game_select');
+    const betAmount = document.getElementById('bet_amount');
+    const odds = document.getElementById('odds');
+    const betWinner = document.getElementById('bet_winner');
+    const potentialEarnings = document.getElementById('potential_earnings');
+
+    gameSelect.addEventListener('change', function() {
+      const selectedGame = JSON.parse(this.value);
+      document.getElementById('bet_game').value = selectedGame.title;
+      document.getElementById('bet_odds').value = selectedGame.odds.toFixed(2);
+      document.getElementById('bet_date').value = selectedGame.date;
+      odds.value = selectedGame.odds.toFixed(2);
+      document.getElementById('game_date').value = selectedGame.date;
+
+      // Update the winner options
+      betWinner.innerHTML = '';
+      selectedGame.winners.forEach(winner => {
+        const option = document.createElement('option');
+        option.value = winner;
+        option.text = winner;
+        betWinner.add(option);
+      });
+
+      // Calculate potential earnings
+      calculatePotentialEarnings();
+    });
+
+    betAmount.addEventListener('input', function() {
+      if (this.value) {
+        calculatePotentialEarnings();
+      }
+    });
+
+    function calculatePotentialEarnings() {
+      const betValue = parseFloat(betAmount.value);
+      const oddsValue = parseFloat(odds.value);
+      if (!isNaN(betValue) && !isNaN(oddsValue)) {
+        potentialEarnings.value = (betValue * oddsValue).toFixed(2);
+      } else {
+        potentialEarnings.value = '';
+      }
+    }
+  });
+</script>

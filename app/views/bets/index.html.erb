@@ -1,0 +1,29 @@
+<%= render 'layouts/navbar' %>
+
+<div style="background-color: #f0f0f0; min-height: 100vh; display: flex; flex-direction: column;">
+  <h1 style="text-align: center;">BetCentral</h1>
+  <h3 style="text-align: center;">Your home for all CRUDdy bets.</h3>
+  <%= button_to "Create New Bet", new_bet_path, method: :get, style: "margin-bottom: 20px; display: block; margin-left: auto; margin-right: auto;" %>
+
+  <table style="border-collapse: collapse; width: 100%; max-width: 50%; margin-left: auto; margin-right: auto;">
+  <thead>
+    <tr>
+      <th style="border: 1px solid #ddd; padding: 8px;">Username</th>
+      <th style="border: 1px solid #ddd; padding: 8px;">Game</th>
+      <th style="border: 1px solid #ddd; padding: 8px;">Date</th>
+      <th style="border: 1px solid #ddd; padding: 8px;">Winner</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @bets.each do |bet| %>
+      <tr>
+        <td style="border: 1px solid #ddd; padding: 8px;"><%= link_to bet.user_id, bet %></td>
+        <td style="border: 1px solid #ddd; padding: 8px;"><%= bet.game %></td>
+        <td style="border: 1px solid #ddd; padding: 8px;"><%= bet.date %></td>
+        <td style="border: 1px solid #ddd; padding: 8px;"><%= bet.winner %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+</div>

@@ -1,0 +1,18 @@
+<nav style="background-color: #f8f9fa; padding-bottom: 10px;">
+  <div style="max-width: 960px; margin: 0 auto;">
+    <a style="font-size: 24px; color: #333; text-decoration: none;" href="/">BetCentral</a>
+    <div>
+      <ul style="list-style-type: none; margin: 0; padding: 0; display: flex; align-items: center;">
+        <% if user_signed_in? %>
+          <li style="margin-right: 10px;">
+            <%= button_to "Sign Out", destroy_user_session_path, method: :delete %>
+          </li>
+        <% else %>
+          <li style="margin-right: 10px;">
+            <%= link_to "Sign in", new_user_session_path, style: "text-decoration: none; color: #333;" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>
